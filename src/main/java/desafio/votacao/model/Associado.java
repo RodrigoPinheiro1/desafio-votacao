@@ -21,7 +21,7 @@ public class Associado {
     private String nome;
 
     @Enumerated(EnumType.STRING)
-    private statusVoto status;
+    private StatusVoto status;
 
 
     private String cpf;
