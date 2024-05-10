@@ -1,5 +1,6 @@
 package desafio.votacao.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import desafio.votacao.dto.PautaDTO;
 import desafio.votacao.dto.Request.RequestAssociadoDTO;
 import desafio.votacao.dto.Request.RequestSessaoVotacaoDTO;
@@ -7,7 +8,7 @@ import desafio.votacao.dto.Request.RequestVotosDTO;
 import desafio.votacao.dto.response.AssociadoDTO;
 import desafio.votacao.dto.response.ContabilizaVotosDto;
 import desafio.votacao.dto.response.ResponseSessaoVotacaoDTO;
-import desafio.votacao.dto.response.ResponseVotosDTO;
+import desafio.votacao.exception.AssociadoInelegivelException;
 import desafio.votacao.exception.AssociadoNotFound;
 import desafio.votacao.exception.PautaNotFound;
 import desafio.votacao.model.*;
@@ -24,7 +25,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +32,6 @@ public class SessaoServiceImpl implements SessaoService {
 
 
     private final ModelMapper modelMapper;
-
 
     private final AssociadoRepository associadoRepository;
     private final PautaRepository pautaRepository;
@@ -61,7 +60,6 @@ public class SessaoServiceImpl implements SessaoService {
 
         Pauta pauta = pautaRepository.findById(dto.getIdPauta()).orElseThrow(PautaNotFound::new);
 
-
         sessaoVotacao.setTitulo(sessaoVotacao.getTitulo());
         sessaoVotacao.setPautas(Collections.singletonList(pauta));
 
@@ -73,22 +71,30 @@ public class SessaoServiceImpl implements SessaoService {
     }
 
     @Override
-    public ResponseVotosDTO receberVotos(RequestVotosDTO dto) {
+    public AssociadoDTO receberVotos(RequestVotosDTO dto, Long idAssociado) {
 
         Voto voto = modelMapper.map(dto, Voto.class);
-
-        Pauta pauta = pautaRepository.findById(dto.getIdPauta()).orElseThrow(PautaNotFound::new);
-        Associado associado = associadoRepository.findById(dto.getIdAssociado()).orElseThrow(AssociadoNotFound::new);
-
-
-        voto.setAssociado(associado);
-        voto.setPauta(pauta);
-        voto.setVoto(voto.getVoto());
-
-
         votoRepository.save(voto);
 
-        return modelMapper.map(voto, ResponseVotosDTO.class);
+        Associado associado = associadoRepository.findById(idAssociado).orElseThrow(AssociadoNotFound::new);
+
+        validarElegibilidade(associado);
+
+        associado.setId(idAssociado);
+        associado.setVoto(voto);
+
+        associadoRepository.save(associado);
+
+        return modelMapper.map(associado, AssociadoDTO.class);
+
+    }
+
+
+    private void validarElegibilidade(Associado associado) {
+
+        if (associado.getStatus() == StatusVoto.UNABLE_TO_VOTE) {
+            throw new AssociadoInelegivelException();
+        }
 
     }
 
@@ -134,8 +140,7 @@ public class SessaoServiceImpl implements SessaoService {
 
         });
 
-
-        validarElegibilidade(associado);
+        sortearElegibilidade(associado);
 
         associado.setNome(associado.getNome());
         associado.setCpf(associado.getCpf());
@@ -146,11 +151,10 @@ public class SessaoServiceImpl implements SessaoService {
         return modelMapper.map(associado, AssociadoDTO.class);
     }
 
-    private void validarElegibilidade(Associado associado) {
+    private void sortearElegibilidade(Associado associado) {
 
 
         Random random = new Random();
-
 
         StatusVoto statusVoto = random.nextBoolean() ? StatusVoto.ABLE_TO_VOTE : StatusVoto.UNABLE_TO_VOTE;
 

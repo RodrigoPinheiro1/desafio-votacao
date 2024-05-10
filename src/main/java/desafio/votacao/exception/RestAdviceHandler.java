@@ -16,7 +16,6 @@ import java.util.List;
 public class RestAdviceHandler {
 
 
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public MessageGlobalException CamposInvalidos(MethodArgumentNotValidException exception) {
@@ -29,6 +28,12 @@ public class RestAdviceHandler {
     }
 
 
+    @ExceptionHandler(AssociadoInelegivelException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String naoPodeVotar() {
+
+        return "Associado não pode votar";
+    }
 
 
     @ExceptionHandler(PautaNotFound.class)
@@ -42,7 +47,7 @@ public class RestAdviceHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String JsonMalFormatado(HttpMessageNotReadableException e) {
 
-        return "Json com erros de formatação:  "+ e.getMessage();
+        return "Json com erros de formatação:  " + e.getMessage();
     }
 
 

@@ -8,6 +8,7 @@ import desafio.votacao.dto.response.AssociadoDTO;
 import desafio.votacao.dto.response.ContabilizaVotosDto;
 import desafio.votacao.dto.response.ResponseSessaoVotacaoDTO;
 import desafio.votacao.dto.response.ResponseVotosDTO;
+import org.springframework.web.bind.annotation.PathVariable;
 
 public interface SessaoService {
 
@@ -16,7 +17,7 @@ public interface SessaoService {
 
     ResponseSessaoVotacaoDTO abrirSessao(RequestSessaoVotacaoDTO dto);
 
-    ResponseVotosDTO receberVotos(RequestVotosDTO dto);
+    AssociadoDTO receberVotos(RequestVotosDTO dto, Long idAssociado);
 
     ContabilizaVotosDto contabilizarVotos();
 

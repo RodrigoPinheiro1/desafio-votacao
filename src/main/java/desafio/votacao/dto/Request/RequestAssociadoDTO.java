@@ -23,7 +23,6 @@ public class RequestAssociadoDTO {
 
     private StatusVoto status;
 
-
     @NotBlank
     private String nome;
 

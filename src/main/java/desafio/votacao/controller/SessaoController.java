@@ -7,10 +7,9 @@ import desafio.votacao.dto.Request.RequestVotosDTO;
 import desafio.votacao.dto.response.AssociadoDTO;
 import desafio.votacao.dto.response.ContabilizaVotosDto;
 import desafio.votacao.dto.response.ResponseSessaoVotacaoDTO;
-import desafio.votacao.dto.response.ResponseVotosDTO;
 import desafio.votacao.service.SessaoService;
 import jakarta.validation.Valid;
-import lombok.Getter;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +48,6 @@ public class SessaoController {
     public ResponseEntity<AssociadoDTO> cadastrarAssociado(@Valid @RequestBody RequestAssociadoDTO dto) {
 
 
-
         AssociadoDTO associadoDTO = sessaoService.cadastrarAssociado(dto);
 
         return new ResponseEntity<>(associadoDTO, HttpStatus.CREATED);
@@ -57,13 +55,13 @@ public class SessaoController {
     }
 
 
-    @PostMapping("/votos")
-    public ResponseEntity<ResponseVotosDTO> receberVotos(@Valid @RequestBody RequestVotosDTO dto) {
+    @PutMapping("/votos/{id}")
+    public ResponseEntity<AssociadoDTO> receberVotos(@Valid @RequestBody RequestVotosDTO dto, @NotNull @PathVariable Long id) {
 
 
-        ResponseVotosDTO votos = sessaoService.receberVotos(dto);
+        AssociadoDTO associadoDTO = sessaoService.receberVotos(dto, id);
 
-        return new ResponseEntity<>(votos, HttpStatus.CREATED);
+        return new ResponseEntity<>(associadoDTO, HttpStatus.CREATED);
 
     }
 

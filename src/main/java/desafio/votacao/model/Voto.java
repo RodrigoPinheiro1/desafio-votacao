@@ -1,5 +1,8 @@
 package desafio.votacao.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,8 +23,6 @@ public class Voto {
     @OneToOne
     private Associado associado;
 
-    @ManyToOne
-    private Pauta pauta;
 
     private String voto;
 

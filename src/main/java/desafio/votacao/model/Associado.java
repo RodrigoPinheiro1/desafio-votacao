@@ -1,5 +1,6 @@
 package desafio.votacao.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,11 +24,10 @@ public class Associado {
     @Enumerated(EnumType.STRING)
     private StatusVoto status;
 
-
     private String cpf;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "associado")
-    private Voto voto;
+    private Voto voto ;
 
     @ManyToMany
     private List<Pauta> pautas = new ArrayList<>();
