@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/sessoes")
+@RequestMapping("/sessoes/v1")
 @RequiredArgsConstructor
 public class SessaoController {
 
@@ -45,10 +45,10 @@ public class SessaoController {
 
     }
 
-    @PostMapping("/associado")
+    @PostMapping("/associados")
     public ResponseEntity<AssociadoDTO> cadastrarAssociado(@Valid @RequestBody RequestAssociadoDTO dto) {
 
-        //arrumar Json Infinito ver Dtos
+
 
         AssociadoDTO associadoDTO = sessaoService.cadastrarAssociado(dto);
 

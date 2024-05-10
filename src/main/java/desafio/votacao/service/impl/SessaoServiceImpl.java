@@ -10,10 +10,7 @@ import desafio.votacao.dto.response.ResponseSessaoVotacaoDTO;
 import desafio.votacao.dto.response.ResponseVotosDTO;
 import desafio.votacao.exception.AssociadoNotFound;
 import desafio.votacao.exception.PautaNotFound;
-import desafio.votacao.model.Associado;
-import desafio.votacao.model.Pauta;
-import desafio.votacao.model.SessaoVotacao;
-import desafio.votacao.model.Voto;
+import desafio.votacao.model.*;
 import desafio.votacao.repository.AssociadoRepository;
 import desafio.votacao.repository.PautaRepository;
 import desafio.votacao.repository.SessaoVotacaoRepository;
@@ -25,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -128,6 +126,7 @@ public class SessaoServiceImpl implements SessaoService {
 
         Associado associado = modelMapper.map(dto, Associado.class);
 
+
         dto.getPautasId().forEach(ids -> {
 
             Pauta pauta = pautaRepository.findById(ids).orElseThrow(PautaNotFound::new);
@@ -135,10 +134,28 @@ public class SessaoServiceImpl implements SessaoService {
 
         });
 
+
+        validarElegibilidade(associado);
+
         associado.setNome(associado.getNome());
+        associado.setCpf(associado.getCpf());
+
 
         associadoRepository.save(associado);
 
         return modelMapper.map(associado, AssociadoDTO.class);
+    }
+
+    private void validarElegibilidade(Associado associado) {
+
+
+        Random random = new Random();
+
+
+        StatusVoto statusVoto = random.nextBoolean() ? StatusVoto.ABLE_TO_VOTE : StatusVoto.UNABLE_TO_VOTE;
+
+        associado.setStatus(statusVoto);
+
+
     }
 }

@@ -2,6 +2,7 @@ package desafio.votacao.dto.response;
 
 import desafio.votacao.dto.PautaDTO;
 import desafio.votacao.model.Pauta;
+import desafio.votacao.model.StatusVoto;
 import desafio.votacao.model.Voto;
 import jakarta.persistence.ManyToMany;
 import lombok.*;
@@ -21,9 +22,10 @@ public class AssociadoDTO {
 
     private String nome;
 
- //   private Voto voto;
+    private String cpf;
 
-    private Date dataVotacao = new Date();
+    private StatusVoto status;
+
 
     private List<PautaDTOResponse> pautas = new ArrayList<>();
 
