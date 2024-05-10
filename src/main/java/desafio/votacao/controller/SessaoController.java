@@ -20,11 +20,13 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class SessaoController {
 
+    //necessario cadastrar as pauta primeiro para que as outros endpoints funcionem
+    //segundo cadastrar associado
 
     private final SessaoService sessaoService;
 
 
-    @PostMapping("/pautas")
+    @PostMapping("/pautas") //
     public ResponseEntity<PautaDTO> cadastraPauta(@Valid @RequestBody PautaDTO PautaDTO) {
 
 
@@ -44,7 +46,7 @@ public class SessaoController {
 
     }
 
-    @PostMapping("/associados")
+    @PostMapping("/associados") //segundo metodo
     public ResponseEntity<AssociadoDTO> cadastrarAssociado(@Valid @RequestBody RequestAssociadoDTO dto) {
 
 
