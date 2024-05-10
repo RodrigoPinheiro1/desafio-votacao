@@ -1,5 +1,6 @@
-package desafio.votacao.dto;
+package desafio.votacao.dto.response;
 
+import desafio.votacao.dto.PautaDTO;
 import desafio.votacao.model.Pauta;
 import desafio.votacao.model.Voto;
 import jakarta.persistence.ManyToMany;
@@ -17,10 +18,13 @@ import java.util.List;
 public class AssociadoDTO {
 
     private Long id;
-    private Voto voto;
+
+    private String nome;
+
+ //   private Voto voto;
 
     private Date dataVotacao = new Date();
 
-    private List<Pauta> pautas = new ArrayList<>();
+    private List<PautaDTOResponse> pautas = new ArrayList<>();
 
 }

@@ -3,6 +3,7 @@ package desafio.votacao.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,25 +13,17 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @EqualsAndHashCode
-public class Associado {
+public class SessaoVotacao {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nome;
+    private String titulo;
 
-    @Enumerated(EnumType.STRING)
-    private statusVoto status;
-
-
-    private String cpf;
-
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "associado")
-    private Voto voto;
-
-    @ManyToMany
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "sessaoVotacao")
     private List<Pauta> pautas = new ArrayList<>();
 
-
+    private LocalDateTime tempoAbertura = LocalDateTime.now();
 }

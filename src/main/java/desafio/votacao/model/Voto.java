@@ -1,7 +1,29 @@
 package desafio.votacao.model;
 
-public enum Voto {
+import jakarta.persistence.*;
+import lombok.*;
 
-    SIM,
-    NAO
+@Data
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@EqualsAndHashCode
+public class Voto {
+
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+
+    @OneToOne
+    private Associado associado;
+
+    @ManyToOne
+    private Pauta pauta;
+
+    private String voto;
+
+
 }

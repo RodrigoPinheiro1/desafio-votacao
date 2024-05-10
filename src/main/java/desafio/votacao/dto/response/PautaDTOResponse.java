@@ -1,7 +1,5 @@
-package desafio.votacao.dto;
+package desafio.votacao.dto.response;
 
-import desafio.votacao.dto.response.AssociadoDTO;
-import desafio.votacao.dto.response.ResponseVotosDTO;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -13,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @EqualsAndHashCode
-public class PautaDTO {
+public class PautaDTOResponse {
 
 
     //@JsonIgnore
@@ -22,7 +20,7 @@ public class PautaDTO {
     @NotBlank
     private String titulo;
 
-    private List<ResponseVotosDTO> votos = new ArrayList<>();
+   // private List<ResponseVotosDTO> votos = new ArrayList<>();
 
    // private List<AssociadoDTO> associados = new ArrayList<>();
 

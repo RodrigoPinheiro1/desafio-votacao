@@ -22,10 +22,16 @@ public class Pauta {
 
     private String titulo;
 
+    @ManyToOne
+    private SessaoVotacao sessaoVotacao;
+
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pauta")
+    private List<Voto> voto;
+
+
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "pautas")
     private List<Associado> associados = new ArrayList<>();
-
-
 
 
 }
