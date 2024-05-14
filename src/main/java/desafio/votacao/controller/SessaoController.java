@@ -20,11 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class SessaoController {
 
-    //necessario cadastrar as pauta primeiro para que as outros endpoints funcionem
-    //segundo cadastrar associado
-
     private final SessaoService sessaoService;
-
 
     @PostMapping("/pautas") //
     public ResponseEntity<PautaDTO> cadastraPauta(@Valid @RequestBody PautaDTO PautaDTO) {
@@ -63,7 +59,7 @@ public class SessaoController {
 
         AssociadoDTO associadoDTO = sessaoService.receberVotos(dto, id);
 
-        return new ResponseEntity<>(associadoDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(associadoDTO, HttpStatus.OK);
 
     }
 

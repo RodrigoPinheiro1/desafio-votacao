@@ -41,7 +41,7 @@ public class ConstantTest {
 
             RequestSessaoVotacaoDTO.builder()
                     .id(1L)
-                    .idPauta(2L)
+                    .idPauta(1L)
                     .tempoAbertura(LocalDateTime.now())
                     .titulo("TITULO")
                     .build();
@@ -50,7 +50,7 @@ public class ConstantTest {
     public static final RequestAssociadoDTO REQUEST_ASSOCIADO_DTO =
             RequestAssociadoDTO.builder()
                     .id(1L)
-                    .cpf("12345678901")
+                    .cpf("38300245090")
                     .status(StatusVoto.ABLE_TO_VOTE)
                     .nome("Nome do Associado")
                     .pautasId(Arrays.asList(1L, 2L, 3L))
