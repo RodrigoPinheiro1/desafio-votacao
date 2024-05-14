@@ -1,4 +1,4 @@
-package desafio.votacao.dto.Request;
+package desafio.votacao.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

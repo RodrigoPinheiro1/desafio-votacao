@@ -1,14 +1,12 @@
 package desafio.votacao.service;
 
 import desafio.votacao.dto.PautaDTO;
-import desafio.votacao.dto.Request.RequestAssociadoDTO;
-import desafio.votacao.dto.Request.RequestSessaoVotacaoDTO;
-import desafio.votacao.dto.Request.RequestVotosDTO;
+import desafio.votacao.dto.request.RequestAssociadoDTO;
+import desafio.votacao.dto.request.RequestSessaoVotacaoDTO;
+import desafio.votacao.dto.request.RequestVotosDTO;
 import desafio.votacao.dto.response.AssociadoDTO;
 import desafio.votacao.dto.response.ContabilizaVotosDto;
 import desafio.votacao.dto.response.ResponseSessaoVotacaoDTO;
-import desafio.votacao.dto.response.ResponseVotosDTO;
-import org.springframework.web.bind.annotation.PathVariable;
 
 public interface SessaoService {
 
