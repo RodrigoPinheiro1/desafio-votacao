@@ -79,7 +79,7 @@ class SessaoServiceImplTest {
 
         when(modelMapper.map(REQUEST_SESSAO_VOTACAO_DTO, SessaoVotacao.class)).thenReturn(SESSAO_VOTACAO);
         when(modelMapper.map(SESSAO_VOTACAO, ResponseSessaoVotacaoDTO.class)).thenReturn(RESPONSE_SESSAO_VOTACAO_DTO);
-        when(pautaRepository.findById(2L)).thenReturn(Optional.of(PAUTA));
+        when(pautaRepository.findById(1L)).thenReturn(Optional.of(PAUTA));
 
         ResponseSessaoVotacaoDTO responseSessaoVotacaoDTO = sessaoService.abrirSessao(REQUEST_SESSAO_VOTACAO_DTO);
 
