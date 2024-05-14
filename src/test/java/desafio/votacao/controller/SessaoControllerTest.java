@@ -29,6 +29,7 @@ class SessaoControllerTest {
 
     @Test
     void cadastraPauta() throws Exception {
+        PAUTA_DTO.setTitulo("titulo");
 
         mockMvc.perform(MockMvcRequestBuilders.post(uri + "/pautas").
                         contentType(MediaType.APPLICATION_JSON)
@@ -36,10 +37,22 @@ class SessaoControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isCreated());
 
     }
+    @Test
+    void naoCadastraPautaFaltandoInformacoes() throws Exception {
+
+
+        PAUTA_DTO.setTitulo("");
+        mockMvc.perform(MockMvcRequestBuilders.post(uri + "/pautas").
+                        contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(PAUTA_DTO)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+    }
 
     @Test
     void abrirSessao() throws Exception {
 
+        REQUEST_SESSAO_VOTACAO_DTO.setTitulo("titulo ");
         mockMvc.perform(MockMvcRequestBuilders.post(uri).
                         contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(REQUEST_SESSAO_VOTACAO_DTO)))
@@ -48,7 +61,22 @@ class SessaoControllerTest {
     }
 
     @Test
+    void naoAbreSessaoComInformacoesInvalidas() throws Exception {
+
+        REQUEST_SESSAO_VOTACAO_DTO.setTitulo("");
+
+        mockMvc.perform(MockMvcRequestBuilders.post(uri).
+                        contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(REQUEST_SESSAO_VOTACAO_DTO)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+    }
+
+    @Test
     void cadastrarAssociado() throws Exception {
+
+        REQUEST_ASSOCIADO_DTO.setCpf("38300245090");
+
 
 
         mockMvc.perform(MockMvcRequestBuilders.post(uri + "/associados").
@@ -58,6 +86,20 @@ class SessaoControllerTest {
 
 
     }
+
+    @Test
+    void naoCadastrarAssociadoComInformacoesFaltando() throws Exception {
+
+        REQUEST_ASSOCIADO_DTO.setCpf("");
+
+        mockMvc.perform(MockMvcRequestBuilders.post(uri + "/associados").
+                        contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(REQUEST_ASSOCIADO_DTO)))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+
+    }
+
 
 //    @Test
 //    void receberVotos() throws Exception { METODO aleatorio de permissao, pode nao funcionar por causa da regra de negocio
