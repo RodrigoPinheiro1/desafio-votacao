@@ -44,9 +44,6 @@ public class SessaoServiceImpl implements SessaoService {
 
         Pauta pauta = modelMapper.map(pautaDTO, Pauta.class);
 
-        pauta.setAssociados(pauta.getAssociados());
-        pauta.setTitulo(pauta.getTitulo());
-
         pautaRepository.save(pauta);
 
         return modelMapper.map(pauta, PautaDTO.class);
@@ -89,7 +86,7 @@ public class SessaoServiceImpl implements SessaoService {
     }
 
 
-    private void validarElegibilidade(Associado associado) {
+    public void validarElegibilidade(Associado associado) {
 
         if (associado.getStatus() == StatusVoto.UNABLE_TO_VOTE) {
             throw new AssociadoInelegivelException();
@@ -99,29 +96,22 @@ public class SessaoServiceImpl implements SessaoService {
 
     @Override
     public ContabilizaVotosDto contabilizarVotos() {
-
         ContabilizaVotosDto contabilizaVotosDto = new ContabilizaVotosDto();
-        AtomicInteger votosNao = new AtomicInteger();
-        AtomicInteger votosSim = new AtomicInteger();
-
+        int votosNao = 0;
+        int votosSim = 0;
 
         List<Voto> votos = votoRepository.findAll();
 
-        votos.forEach(voto -> {
-
-
+        for (Voto voto : votos) {
             if (voto.getVoto().equalsIgnoreCase("não")) {
-
-                votosNao.addAndGet(1);
-
+                votosNao++;
             } else {
-                votosSim.getAndSet(votosSim.get() + 1);
+                votosSim++;
             }
+        }
 
-            contabilizaVotosDto.setVotosNao(votosNao);
-            contabilizaVotosDto.setVotosSim(votosSim);
-
-        });
+        contabilizaVotosDto.setVotosNao(votosNao);
+        contabilizaVotosDto.setVotosSim(votosSim);
 
         return contabilizaVotosDto;
     }
