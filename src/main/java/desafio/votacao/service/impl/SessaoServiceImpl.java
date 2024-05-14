@@ -7,7 +7,6 @@ import desafio.votacao.dto.request.RequestVotosDTO;
 import desafio.votacao.dto.response.AssociadoDTO;
 import desafio.votacao.dto.response.ContabilizaVotosDto;
 import desafio.votacao.dto.response.ResponseSessaoVotacaoDTO;
-import desafio.votacao.exception.AssociadoInelegivelException;
 import desafio.votacao.exception.AssociadoNotFound;
 import desafio.votacao.exception.PautaNotFound;
 import desafio.votacao.model.*;
@@ -16,14 +15,13 @@ import desafio.votacao.repository.PautaRepository;
 import desafio.votacao.repository.SessaoVotacaoRepository;
 import desafio.votacao.repository.VotoRepository;
 import desafio.votacao.service.SessaoService;
+import desafio.votacao.service.utils.Elegibilidade;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +30,7 @@ public class SessaoServiceImpl implements SessaoService {
 
     private final ModelMapper modelMapper;
 
+    private final Elegibilidade elegibilidade;
     private final AssociadoRepository associadoRepository;
     private final PautaRepository pautaRepository;
     private final SessaoVotacaoRepository sessaoVotacaoRepository;
@@ -74,7 +73,7 @@ public class SessaoServiceImpl implements SessaoService {
 
         Associado associado = associadoRepository.findById(idAssociado).orElseThrow(AssociadoNotFound::new);
 
-        validarElegibilidade(associado);
+        elegibilidade.validarElegibilidade(associado);
 
         associado.setId(idAssociado);
         associado.setVoto(voto);
@@ -85,14 +84,6 @@ public class SessaoServiceImpl implements SessaoService {
 
     }
 
-
-    public void validarElegibilidade(Associado associado) {
-
-        if (associado.getStatus() == StatusVoto.UNABLE_TO_VOTE) {
-            throw new AssociadoInelegivelException();
-        }
-
-    }
 
     @Override
     public ContabilizaVotosDto contabilizarVotos() {
@@ -121,34 +112,18 @@ public class SessaoServiceImpl implements SessaoService {
 
         Associado associado = modelMapper.map(dto, Associado.class);
 
-
         dto.getPautasId().forEach(ids -> {
 
             Pauta pauta = pautaRepository.findById(ids).orElseThrow(PautaNotFound::new);
             associado.setPautas(Collections.singletonList(pauta));
 
         });
-
-        sortearElegibilidade(associado);
-
-        associado.setNome(associado.getNome());
-        associado.setCpf(associado.getCpf());
-
+        elegibilidade.sortearElegibilidade(associado);
 
         associadoRepository.save(associado);
 
         return modelMapper.map(associado, AssociadoDTO.class);
     }
 
-    private void sortearElegibilidade(Associado associado) {
 
-
-        Random random = new Random();
-
-        StatusVoto statusVoto = random.nextBoolean() ? StatusVoto.ABLE_TO_VOTE : StatusVoto.UNABLE_TO_VOTE;
-
-        associado.setStatus(statusVoto);
-
-
-    }
 }

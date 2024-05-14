@@ -14,8 +14,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ContabilizaVotosDto {
 
 
-    private AtomicInteger votosSim;
-    private AtomicInteger votosNao;
+    private int votosSim;
+    private int votosNao;
 
 
 
